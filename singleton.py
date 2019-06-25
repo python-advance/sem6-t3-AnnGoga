@@ -27,15 +27,17 @@ class CurrencyBoard:
             CurrencyBoard()
         return CurrencyBoard.__instance
 
+    def __new__(aclass, *args, **kwargs):
+      if CurrencyBoard.__instance == None:
+        CurrencyBoard.__instance = object.__new__(aclass, *args, **kwargs)
+      
+      return CurrencyBoard.__instance
+
     def __init__(self):
         """ Virtually private constructor. """
         self.currencies = ['R01239', 'R01235', 'R01035']
         self.rates = get_currencies(self.currencies)
         self.timesaver = time.time()
-        if CurrencyBoard.__instance != None:
-            raise Exception("This class is a singleton!")
-        else:
-            CurrencyBoard.__instance = self
 
     def get_currency_from_cache(self, code):
         return self.rates.setdefault(code)
